@@ -161,8 +161,7 @@ class _MainCardState extends State<MainCard> {
                         child: NMButton(
                           width: 70,
                           onTap: () {
-                            LauncherAssist.launchApp(
-                                _favoritesApps[index]["package"]);
+                            LauncherAssist.launchApp(_favoritesApps[index]["package"]);
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(10),
@@ -183,18 +182,3 @@ class _MainCardState extends State<MainCard> {
     );
   }
 }
-
-/*
-
-Padding( 
-              padding: const EdgeInsets.symmetric(vertical: 25),
-              child: Text(
-                'Soft Launcher',
-                style: TextStyle(
-                  color: fCD,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            */
