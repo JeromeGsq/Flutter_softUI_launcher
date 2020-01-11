@@ -1,4 +1,4 @@
-name: creditcard_neumorphism
+name: softui_launcher
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -19,6 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  launcher_assist: ^1.1.3
+  flutter_statusbarcolor:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

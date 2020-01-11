@@ -1,4 +1,4 @@
-import 'package:creditcard_neumorphism/widgets/nm_box.dart';
+import 'package:softui_launcher/widgets/nm_box.dart';
 import 'package:flutter/widgets.dart';
 
 class NMCard extends StatelessWidget {

@@ -1,4 +1,5 @@
-import 'package:creditcard_neumorphism/widgets/nm_box.dart';
+import 'package:softui_launcher/widgets/nm_box.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class NMButton extends StatefulWidget {
@@ -56,17 +57,25 @@ class _NMButtonState extends State<NMButton> {
         decoration: _down
             ? nMboxInvert(radius: widget.radius)
             : nMbox(radius: widget.radius),
-        child: Stack(
-          alignment: widget.alignmentDirectional,
-          children: <Widget>[
-            widget.child ?? Container(),
-            Icon(
-                  widget.icon,
-                  size: widget.iconSize,
-                  color: _down ? fCD : fCL,
-                ) ??
-                Container(),
-          ],
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
+          child: Container(
+            decoration: _down
+                ? nMboxInner(radius: widget.radius)
+                : nMboxOuter(radius: widget.radius),
+            child: Stack(
+              alignment: widget.alignmentDirectional,
+              children: <Widget>[
+                widget.child ?? Container(),
+                Icon(
+                      widget.icon,
+                      size: widget.iconSize,
+                      color: _down ? fCD : fCL,
+                    ) ??
+                    Container(),
+              ],
+            ),
+          ),
         ),
       ),
     );

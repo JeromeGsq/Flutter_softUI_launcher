@@ -1,4 +1,4 @@
-package com.example.creditcard_neumorphism
+package com.example.softui_launcher
 
 import android.os.Bundle
 

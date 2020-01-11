@@ -1,10 +1,9 @@
-import 'package:creditcard_neumorphism/widgets/nm_box.dart';
-import 'package:creditcard_neumorphism/widgets/nm_button.dart';
-import 'package:creditcard_neumorphism/widgets/nm_card.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-double transLimit = 1250;
+import 'package:launcher_assist/launcher_assist.dart';
+import 'package:softui_launcher/widgets/nm_box.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:softui_launcher/widgets/nm_button.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,75 +19,111 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainCard extends StatelessWidget {
+class MainCard extends StatefulWidget {
+  @override
+  _MainCardState createState() => _MainCardState();
+}
+
+class _MainCardState extends State<MainCard> {
+  int _numberOfInstalledApps = 0;
+  var _apps;
+
+  @override
+  void initState() {
+    super.initState();
+
+    LauncherAssist.getAllApps().then((apps) {
+      setState(() {
+        _apps = apps;
+        _numberOfInstalledApps = apps?.length;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: mainColor,
-      statusBarColor: mainColor,
-    ));
+    FlutterStatusbarcolor.setStatusBarColor(mainColor);
+    FlutterStatusbarcolor.setNavigationBarColor(mainColor);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
-    return Scaffold(
-      backgroundColor: mainColor,
-      body: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Spacer(),
-                Spacer(),
-                Text(
-                  'Soft Launcher',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: fCD,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700,
-                  ),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: mainColor,
+        body: Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(25),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Spacer(),
+                    NMButton(
+                      onTap: () {},
+                      icon: Icons.settings,
+                    ),
+                  ],
                 ),
-                Spacer(),
-                NMButton(
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                height: 190,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _numberOfInstalledApps,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Container(
+                        width: 150,
+                        height: 190,
+                        child: NMButton(
+                          onTap: () {
+                            LauncherAssist.launchApp(_apps[index]["package"]);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              _apps[index]["package"].toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(left: 36),
+                child: NMButton(
                   onTap: () {},
-                  icon: Icons.settings,
+                  width: 65,
+                  height: 65,
+                  radius: 65 / 2,
+                  icon: Icons.star,
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 200,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: NMButton(
-                onTap: () {},
-                width: 65,
-                height: 65,
-                radius: 65 / 2,
-                icon: Icons.star,
               ),
-            ),
-            Center(
-              child: NMButton(
-                onTap: () {},
-                width: 200,
-                height: 200,
-                radius: 100,
-                icon: Icons.play_arrow,
-                iconSize: 60,
+              Center(
+                child: NMButton(
+                  onTap: () {},
+                  width: 200,
+                  height: 200,
+                  radius: 100,
+                  icon: Icons.play_arrow,
+                  iconSize: 60,
+                ),
               ),
-            ),
-            Spacer(),
-            NMButton(
-              alignmentDirectional: AlignmentDirectional.topStart,
-              height: 100,
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, top: 15),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(left: 30, bottom: 10),
                 child: Text(
                   'Favorites :',
                   style: TextStyle(
@@ -98,8 +133,15 @@ class MainCard extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+                child: NMButton(
+                  height: 100,
+                  width: double.infinity,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
