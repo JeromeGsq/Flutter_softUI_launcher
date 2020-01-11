@@ -12,11 +12,11 @@ dependencies:
   flutter_statusbarcolor:
   carousel_slider: ^1.4.1
   cupertino_icons: ^0.1.2
-  provider: any
+  provider: 4.0.1
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
+    sdk: flutter 
 
 flutter:
   uses-material-design: true

@@ -56,15 +56,11 @@ class _NMButtonState extends State<NMButton> {
       child: Container(
         width: widget.width,
         height: widget.height,
-        decoration: _down || widget.forcePressed
-            ? nMboxInvert(radius: widget.radius)
-            : nMbox(radius: widget.radius),
+        decoration: _down || widget.forcePressed ? nMboxInvert(radius: widget.radius) : nMbox(radius: widget.radius),
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           child: Container(
-            decoration: _down || widget.forcePressed
-                ? nMboxInner(radius: widget.radius)
-                : nMboxOuter(radius: widget.radius),
+            decoration: _down || widget.forcePressed ? nMboxInner(radius: widget.radius) : nMboxOuter(radius: widget.radius),
             child: Stack(
               alignment: widget.alignmentDirectional,
               children: <Widget>[
