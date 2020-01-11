@@ -1,8 +1,10 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:softui_launcher/widgets/nm_button.dart';
 import 'package:flutter/services.dart';
 import 'package:launcher_assist/launcher_assist.dart';
+import 'package:softui_launcher/widgets/app_item.dart';
 import 'package:softui_launcher/widgets/nm_box.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:softui_launcher/widgets/nm_button.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,8 +27,11 @@ class MainCard extends StatefulWidget {
 }
 
 class _MainCardState extends State<MainCard> {
-  int _numberOfInstalledApps = 0;
-  var _apps;
+  List<dynamic> _apps;
+  List<dynamic> _favoritesApps;
+
+  bool _isCurrentAppFavorite = false;
+  int _currentPage = 0;
 
   @override
   void initState() {
@@ -35,8 +40,29 @@ class _MainCardState extends State<MainCard> {
     LauncherAssist.getAllApps().then((apps) {
       setState(() {
         _apps = apps;
-        _numberOfInstalledApps = apps?.length;
+        _favoritesApps = [];
+        _currentPage = 0;
       });
+    });
+  }
+
+  onPageChanged({int index}) {
+    _currentPage = index;
+    print(index);
+    setState(() {
+      _isCurrentAppFavorite = _favoritesApps.contains(_apps[_currentPage]);
+      print(_isCurrentAppFavorite);
+    });
+  }
+
+  addFavorite({dynamic app}) {
+    setState(() {
+      if (_favoritesApps.contains(app)) {
+        _favoritesApps.remove(app);
+      } else {
+        _favoritesApps.add(app);
+      }
+      _isCurrentAppFavorite = _favoritesApps.contains(_apps[_currentPage]);
     });
   }
 
@@ -71,49 +97,36 @@ class _MainCardState extends State<MainCard> {
                 ),
               ),
               SizedBox(height: 20),
-              SizedBox(
+              CarouselSlider.builder(
+                scrollPhysics: BouncingScrollPhysics(),
+                enableInfiniteScroll: false,
+                onPageChanged: (index) => onPageChanged(index: index),
+                viewportFraction: 0.5,
                 height: 190,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _numberOfInstalledApps,
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Container(
-                        width: 150,
-                        height: 190,
-                        child: NMButton(
-                          onTap: () {
-                            LauncherAssist.launchApp(_apps[index]["package"]);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              _apps[index]["package"].toString(),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                enlargeCenterPage: true,
+                itemCount: _apps.length,
+                itemBuilder: (context, index) {
+                  return AppItem(app: _apps[index]);
+                },
               ),
               SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(left: 36),
                 child: NMButton(
-                  onTap: () {},
+                  onTap: () {
+                    addFavorite(app: _apps[_currentPage]);
+                  },
                   width: 65,
                   height: 65,
                   radius: 65 / 2,
-                  icon: Icons.star,
+                  icon: _isCurrentAppFavorite ? Icons.star : Icons.star_border,
                 ),
               ),
               Center(
                 child: NMButton(
-                  onTap: () {},
+                  onTap: () {
+                    LauncherAssist.launchApp(_apps[_currentPage]["package"]);
+                  },
                   width: 200,
                   height: 200,
                   radius: 100,
@@ -138,6 +151,29 @@ class _MainCardState extends State<MainCard> {
                 child: NMButton(
                   height: 100,
                   width: double.infinity,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _favoritesApps.length,
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: NMButton(
+                          width: 70,
+                          onTap: () {
+                            LauncherAssist.launchApp(
+                                _favoritesApps[index]["package"]);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Image.memory(
+                              _favoritesApps[index]["icon"],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ],

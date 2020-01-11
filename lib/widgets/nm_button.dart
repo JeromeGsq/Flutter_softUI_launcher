@@ -11,6 +11,7 @@ class NMButton extends StatefulWidget {
     this.iconSize = 22,
     this.radius = 15,
     this.child,
+    this.forcePressed = false,
     this.onTap,
   });
 
@@ -21,6 +22,7 @@ class NMButton extends StatefulWidget {
   final double iconSize;
   final double radius;
   final Widget child;
+  final bool forcePressed;
   final Function onTap;
 
   @override
@@ -54,13 +56,13 @@ class _NMButtonState extends State<NMButton> {
       child: Container(
         width: widget.width,
         height: widget.height,
-        decoration: _down
+        decoration: _down || widget.forcePressed
             ? nMboxInvert(radius: widget.radius)
             : nMbox(radius: widget.radius),
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
           child: Container(
-            decoration: _down
+            decoration: _down || widget.forcePressed
                 ? nMboxInner(radius: widget.radius)
                 : nMboxOuter(radius: widget.radius),
             child: Stack(
