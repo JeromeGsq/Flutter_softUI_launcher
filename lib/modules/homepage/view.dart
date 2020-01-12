@@ -12,8 +12,8 @@ class HomepageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ChangeNotifierProvider.value(
-          value: HomepageViewModel()..load(),
+        child: ChangeNotifierProvider<HomepageViewModel>(
+          create: (_) => HomepageViewModel()..load(),
           child: const _View(),
         ),
       ),
@@ -29,7 +29,9 @@ class _View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return View<HomepageViewModel>(
-      onEvent: (context, event) {},
+      onEvent: (context, event) {
+        print('event');
+      },
       idleBuilder: (context, vm) {
         return Scaffold(
           body: buildPage(vm, context),
@@ -39,6 +41,18 @@ class _View extends StatelessWidget {
   }
 
   Widget buildPage(HomepageViewModel vm, BuildContext context) {
-    return Container();
+    return Column(
+      children: <Widget>[
+        Container(
+          child: Text('${vm.title} ${vm.count}'),
+        ),
+        MaterialButton(
+          child: const Text('add'),
+          onPressed: () {
+            vm.add();
+          },
+        )
+      ],
+    );
   }
 }
