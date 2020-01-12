@@ -9,7 +9,7 @@ class NMButton extends StatefulWidget {
     this.height = 55,
     this.alignmentDirectional = AlignmentDirectional.center,
     this.icon,
-    this.iconSize = 22,
+    this.iconSize = 24,
     this.radius = 15,
     this.child,
     this.forcePressed = false,

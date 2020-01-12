@@ -35,6 +35,12 @@ class AppTextStyles {
     fontSize: 12,
     letterSpacing: -0.46,
   );
+
+  static const label = _AppTextStyle(
+    color: AppColors.fCL,
+    fontSize: 16,
+    fontWeight: FontWeight.w300,
+  );
 }
 
 class _AppTextStyle extends TextStyle {

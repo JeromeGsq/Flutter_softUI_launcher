@@ -18,11 +18,13 @@ class AppColors {
   static const Color yellow = Color(0xFFFFB900);
   static const Color green = Color(0xFF2AB52C);
 
-  static Color mainColor = Colors.grey.shade100;
+  static Color smartGray = Colors.grey.shade100;
+  static Color highlight = Color(0x55FFFFFF);
+
   static Color mCD = Colors.black.withOpacity(0.075);
   static Color mCDD = Colors.grey.withOpacity(0.1);
   static Color mCC = Colors.green.withOpacity(0.65);
-  static Color fCD = Colors.grey.shade700;
+  static const Color fCD = Color(0xFF616161);
   static Color mCL = Colors.white;
   static const Color fCL = Colors.grey;
 }

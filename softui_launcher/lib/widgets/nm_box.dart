@@ -4,7 +4,7 @@ import 'package:softui_launcher/theme/app_colors.dart';
 BoxDecoration nMbox({double radius = 15}) {
   return BoxDecoration(
     borderRadius: BorderRadius.circular(radius),
-    color: AppColors.mainColor,
+    color: AppColors.smartGray,
     border: Border.all(
       color: Color.fromARGB(100, 255, 255, 255),
       width: 0,
@@ -39,25 +39,11 @@ BoxDecoration nMboxInvert({double radius = 15}) {
   );
 }
 
-BoxDecoration nMboxInvertActive = nMboxInvert().copyWith(color: AppColors.mCC);
-
-BoxDecoration nMbtn = BoxDecoration(
-  borderRadius: BorderRadius.circular(10),
-  color: AppColors.mainColor,
-  boxShadow: [
-    BoxShadow(
-      color: AppColors.mCD,
-      offset: Offset(2, 2),
-      blurRadius: 2,
-    )
-  ],
-);
-
 BoxDecoration nMboxInner({double radius = 15}) {
   return BoxDecoration(
     borderRadius: BorderRadius.circular(radius),
     border: Border.all(
-      color: Color.fromARGB(100, 255, 255, 255),
+      color: AppColors.highlight,
       width: 1,
     ),
     boxShadow: [
@@ -79,7 +65,7 @@ BoxDecoration nMboxOuter({double radius = 15}) {
   return BoxDecoration(
     borderRadius: BorderRadius.circular(radius),
     border: Border.all(
-      color: Color.fromARGB(100, 255, 255, 255),
+      color: AppColors.highlight,
       width: 1,
     ),
     boxShadow: [
@@ -89,7 +75,7 @@ BoxDecoration nMboxOuter({double radius = 15}) {
         blurRadius: 15,
       ),
       BoxShadow(
-        color: AppColors.mainColor,
+        color: AppColors.smartGray,
         offset: Offset(-20, -20),
         blurRadius: 10,
       ),
