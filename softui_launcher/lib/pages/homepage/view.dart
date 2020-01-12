@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:softui_launcher/pages/homepage/viewmodel.dart';
+import 'package:softui_launcher/theme/app_colors.dart';
+import 'package:softui_launcher/widgets/nm_button.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,16 +23,7 @@ class _HomePageState extends State<HomePage> {
     return ScopedModel<HomeModel>(
       model: this._model,
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.orange,
-          title: Center(
-            child: ScopedModelDescendant<HomeModel>(
-              builder: (context, child, model) {
-                return Text(model.title);
-              },
-            ),
-          ),
-        ),
+        backgroundColor: AppColors.mainColor,
         body: ScopedModelDescendant<HomeModel>(
           builder: (context, child, model) {
             return buildPage(model, context);
@@ -41,17 +34,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildPage(HomeModel model, BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(),
-        Text(model.pageIndex.toString()),
-        MaterialButton(
-          onPressed: () {
-            model.add();
-          },
-          child: Text('Add'),
-        ),
-      ],
+    return Center(
+      child: NMButton(
+        onTap: () {},
+        width: 100,
+        height: 100,
+      ),
     );
   }
 }
