@@ -54,9 +54,9 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             buildAppBar(),
             SizedBox(height: 16),
-            buildLine(categoryLabel: 'Apps', icon: Icons.apps),
-            buildLine(categoryLabel: 'Films', icon: Icons.movie),
-            buildLine(categoryLabel: 'Jeux', icon: Icons.gamepad),
+            buildLine(categoryLabel: 'Apps', icon: Icons.apps, apps: model.apps),
+            buildLine(categoryLabel: 'Films', icon: Icons.movie, apps: model.apps.where((w) => w.label[0] == 'S').toList()),
+            buildLine(categoryLabel: 'Jeux', icon: Icons.gamepad, apps: model.apps.where((w) => w.label[0] == 'P').toList()),
             SizedBox(height: 32),
           ],
         ),
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.symmetric(horizontal: 32, vertical: kverticalPadding),
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        itemCount: 999,
+        itemCount: (apps?.length ?? 1),
         itemBuilder: (_, index) {
           return index == 0
               ? Padding(
@@ -100,15 +100,21 @@ class _HomePageState extends State<HomePage> {
                   ),
                 )
               : Transform.scale(
-                  scale: true ? 1 : 0.9,
+                  scale: index == 1 ? 1 : 0.8,
                   child: Column(
                     children: <Widget>[
                       Expanded(
                         flex: 1,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
                           child: NMButton(
                             width: 150,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Image.memory(
+                                apps[index]?.icon,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -117,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Text(
-                            categoryLabel,
+                            apps[index]?.label,
                             style: AppTextStyles.label.copyWith(fontSize: 12),
                           ),
                         ),
