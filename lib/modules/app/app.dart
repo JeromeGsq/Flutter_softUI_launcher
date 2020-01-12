@@ -1,7 +1,6 @@
 import 'package:softui_launcher/modules/app/app_providers.dart';
+import 'package:softui_launcher/modules/homepage/view.dart';
 import 'package:flutter/material.dart';
-
-import '../homepage/view.dart';
 
 class App extends StatefulWidget {
   const App({
