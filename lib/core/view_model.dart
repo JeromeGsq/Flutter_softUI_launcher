@@ -23,7 +23,7 @@ abstract class ViewModel extends ChangeNotifier {
         _viewState = viewState,
         _streamController = StreamController.broadcast();
 
-  StreamController<Object> _streamController;
+  final StreamController<Object> _streamController;
   Stream<Object> get events => _streamController.stream;
 
   /// The state of the view.

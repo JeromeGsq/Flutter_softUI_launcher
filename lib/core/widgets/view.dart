@@ -1,8 +1,8 @@
+import 'package:softui_launcher/core/view_model.dart';
+import 'package:softui_launcher/core/widgets/event_listener.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:softui_launcher/core/view_model.dart';
-import 'package:softui_launcher/core/widgets/event_listener.dart';
 
 typedef ViewBuilder<T extends ViewModel> = Widget Function(
   BuildContext context,

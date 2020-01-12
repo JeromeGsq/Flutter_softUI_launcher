@@ -11,12 +11,6 @@ class AppProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    return MultiProvider(
-      providers: [],
-      child: child,
-    );
-    */
     return child;
   }
 }

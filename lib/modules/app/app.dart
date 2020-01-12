@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:softui_launcher/modules/app/app_providers.dart';
-import 'package:softui_launcher/modules/home/view.dart';
+import 'package:flutter/material.dart';
+
+import '../homepage/view.dart';
 
 class App extends StatefulWidget {
   const App({
@@ -17,8 +18,10 @@ class _AppState extends State<App> {
     return AppProviders(
       child: MaterialApp(
         title: 'SoftUI Launcher',
-        debugShowCheckedModeBanner: false,
-        home: HomeView(),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const HomepageView(),
+        },
       ),
     );
   }

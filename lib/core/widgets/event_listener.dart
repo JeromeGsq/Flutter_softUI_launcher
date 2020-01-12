@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:softui_launcher/core/view_model.dart';
+import 'package:flutter/material.dart';
 
 /// A widget that listens to events dispateched by a view model.
 @immutable

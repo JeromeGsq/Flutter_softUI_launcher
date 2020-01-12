@@ -1,4 +1,4 @@
-package com.example.softui_launcher
+package com.example.softui_launcher_test
 
 import android.os.Bundle
 
