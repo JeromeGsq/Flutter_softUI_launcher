@@ -52,19 +52,38 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            buildAppBar(),
+            AppBar(),
             SizedBox(height: 16),
-            buildLine(categoryLabel: 'Apps', icon: Icons.apps, apps: model.apps),
-            buildLine(categoryLabel: 'Films', icon: Icons.movie, apps: model.apps.where((w) => w.label[0] == 'S').toList()),
-            buildLine(categoryLabel: 'Jeux', icon: Icons.gamepad, apps: model.apps.where((w) => w.label[0] == 'P').toList()),
-            SizedBox(height: 32),
+            buildLine(
+              categoryLabel: 'Apps',
+              icon: Icons.apps,
+              apps: model.apps,
+              selectedCell: model.selectedCell,
+            ),
+            buildLine(
+              categoryLabel: 'Films',
+              icon: Icons.movie,
+              apps: model.apps.where((w) => w.label[0] == 'S').toList(),
+              selectedCell: model.selectedCell,
+            ),
+            buildLine(
+              categoryLabel: 'Jeux',
+              icon: Icons.gamepad,
+              apps: model.apps.where((w) => w.label[0] == 'P').toList(),
+              selectedCell: model.selectedCell,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget buildLine({String categoryLabel = '', IconData icon, List<AppCell> apps}) {
+  Widget buildLine({
+    String categoryLabel = '',
+    IconData icon,
+    List<AppCell> apps,
+    AppCell selectedCell,
+  }) {
     final kverticalPadding = 24.0;
     final kcirclePadding = 8.0;
     final kheightSize = 110.0;
@@ -78,65 +97,29 @@ class _HomePageState extends State<HomePage> {
         itemCount: (apps?.length ?? 1),
         itemBuilder: (_, index) {
           return index == 0
-              ? Padding(
-                  padding: const EdgeInsets.only(right: 32),
-                  child: Column(
-                    children: <Widget>[
-                      Spacer(),
-                      Padding(
-                        padding: EdgeInsets.all(kcirclePadding),
-                        child: NMButton(
-                          onTap: () {},
-                          icon: icon,
-                          radius: kheightSize / 2,
-                        ),
-                      ),
-                      Text(
-                        categoryLabel,
-                        style: AppTextStyles.label.copyWith(fontSize: 12),
-                      ),
-                      Spacer(),
-                    ],
-                  ),
+              ? CategoryCircleWidget(
+                  categoryLabel: categoryLabel,
+                  icon: icon,
+                  kcirclePadding: kcirclePadding,
+                  kheightSize: kheightSize,
                 )
-              : Transform.scale(
-                  scale: index == 1 ? 1 : 0.8,
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 0),
-                          child: NMButton(
-                            width: 150,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12),
-                              child: Image.memory(
-                                apps[index]?.icon,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            apps[index]?.label,
-                            style: AppTextStyles.label.copyWith(fontSize: 12),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+              : AppCellWidget(
+                  appCell: apps[index],
+                  selected: _model.selectedCell == apps[index],
                 );
         },
       ),
     );
   }
+}
 
-  Widget buildAppBar() {
+class AppBar extends StatelessWidget {
+  const AppBar({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         Padding(
@@ -168,6 +151,93 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class CategoryCircleWidget extends StatelessWidget {
+  const CategoryCircleWidget({
+    Key key,
+    @required this.categoryLabel,
+    @required this.icon,
+    @required this.kcirclePadding,
+    @required this.kheightSize,
+  }) : super(key: key);
+
+  final categoryLabel;
+  final icon;
+  final double kcirclePadding;
+  final double kheightSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 32),
+      child: Column(
+        children: <Widget>[
+          Spacer(),
+          Padding(
+            padding: EdgeInsets.all(kcirclePadding),
+            child: NMButton(
+              onTap: () {},
+              icon: icon,
+              radius: kheightSize / 2,
+            ),
+          ),
+          Text(
+            categoryLabel,
+            style: AppTextStyles.label.copyWith(fontSize: 12),
+          ),
+          Spacer(),
+        ],
+      ),
+    );
+  }
+}
+
+class AppCellWidget extends StatelessWidget {
+  const AppCellWidget({
+    @required this.appCell,
+    @required this.selected,
+    Key key,
+  }) : super(key: key);
+
+  final appCell;
+  final selected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.scale(
+      scale: selected ? 1 : 0.8,
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: NMButton(
+                width: 150,
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Image.memory(
+                    appCell?.icon,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 0,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                appCell?.label,
+                style: AppTextStyles.label.copyWith(fontSize: 12),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

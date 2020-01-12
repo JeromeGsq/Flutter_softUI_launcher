@@ -8,6 +8,8 @@ class HomeModel extends BaseModel {
   bool isBusy;
   String title;
 
+  AppCell selectedCell;
+
   List<AppCell> apps = [];
 
   HomeModel({
@@ -28,7 +30,15 @@ class HomeModel extends BaseModel {
         ),
       );
     }
+    apps.sort((w, v) => w.label[0].compareTo(v.label[0]));
 
+    notifyListeners();
+
+    setSelectedCell(apps.firstWhere((w) => w.label == 'Agenda'));
+  }
+
+  Future<void> setSelectedCell(AppCell appCell) async {
+    selectedCell = appCell;
     notifyListeners();
   }
 }
