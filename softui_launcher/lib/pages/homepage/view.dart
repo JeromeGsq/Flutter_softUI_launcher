@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  HomeModel _model = HomeModel();
+  HomeModel _model = HomeModel(isBusy: true);
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: AppColors.smartGray,
           body: ScopedModelDescendant<HomeModel>(
             builder: (context, child, model) {
-              return buildPage(model, context);
+              return model.isBusy ? Container() : buildPage(model, context);
             },
           ),
         ),
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            AppBar(),
+            AppBar(model: model),
             SizedBox(height: 16),
             buildLine(
               categoryLabel: 'Apps',
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.symmetric(horizontal: 32, vertical: kverticalPadding),
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        itemCount: (apps?.length ?? 0),
+        itemCount: apps?.length,
         itemBuilder: (_, index) {
           return index == 0
               ? CategoryCircleWidget(
@@ -119,7 +119,10 @@ class _HomePageState extends State<HomePage> {
 class AppBar extends StatelessWidget {
   const AppBar({
     Key key,
+    @required this.model,
   }) : super(key: key);
+
+  final model;
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +152,9 @@ class AppBar extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: NMButton(
-            onTap: () {},
+            onTap: () {
+              model.launchSettings();
+            },
             icon: Icons.settings,
           ),
         ),
@@ -225,9 +230,11 @@ class AppCellWidget extends StatelessWidget {
                 width: 150,
                 child: Padding(
                   padding: const EdgeInsets.all(12),
-                  child: Image.memory(
-                    appCell?.icon,
-                  ),
+                  child: appCell?.icon == null
+                      ? Icon(Icons.apps)
+                      : Image.memory(
+                          appCell?.icon,
+                        ),
                 ),
               ),
             ),
