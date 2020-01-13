@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:softui_launcher/pages/homepage/view.dart';
 
 void main() {
@@ -19,11 +20,21 @@ class FlutterScopedModelApp extends StatefulWidget {
 class _FlutterScopedModelAppState extends State<FlutterScopedModelApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: widget.title,
-      onGenerateRoute: _getRoute,
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+    return Shortcuts(
+      // needed for AndroidTV to be able to select
+      shortcuts: {LogicalKeySet(LogicalKeyboardKey.select): const Intent(ActivateAction.key)},
+      child: RawKeyboardListener(
+        focusNode: FocusNode(),
+        onKey: (key) {
+          print(key);
+        },
+        child: MaterialApp(
+          title: widget.title,
+          onGenerateRoute: _getRoute,
+          debugShowCheckedModeBanner: false,
+          home: HomePage(),
+        ),
+      ),
     );
   }
 

@@ -203,8 +203,8 @@ class CategoryCircleWidget extends StatelessWidget {
   }
 }
 
-class AppCellWidget extends StatelessWidget {
-  const AppCellWidget({
+class AppCellWidget extends StatefulWidget {
+  AppCellWidget({
     @required this.appCell,
     @required this.selected,
     @required this.onTap,
@@ -216,9 +216,16 @@ class AppCellWidget extends StatelessWidget {
   final selected;
 
   @override
+  _AppCellWidgetState createState() => _AppCellWidgetState();
+}
+
+class _AppCellWidgetState extends State<AppCellWidget> {
+  double scale = 0.8;
+
+  @override
   Widget build(BuildContext context) {
     return Transform.scale(
-      scale: selected ? 1 : 0.8,
+      scale: scale,
       child: Column(
         children: <Widget>[
           Expanded(
@@ -226,14 +233,19 @@ class AppCellWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: NMButton(
-                onTap: onTap,
+                onFocus: (hasFocus) {
+                  setState(() {
+                    scale = hasFocus ? 1 : 0.8;
+                  });
+                },
+                onTap: widget.onTap,
                 width: 150,
                 child: Padding(
                   padding: const EdgeInsets.all(12),
-                  child: appCell?.icon == null
+                  child: widget.appCell?.icon == null
                       ? Icon(Icons.apps)
                       : Image.memory(
-                          appCell?.icon,
+                          widget.appCell?.icon,
                         ),
                 ),
               ),
@@ -244,7 +256,7 @@ class AppCellWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Text(
-                appCell?.label,
+                widget.appCell?.label,
                 style: AppTextStyles.label.copyWith(fontSize: 12),
               ),
             ),
