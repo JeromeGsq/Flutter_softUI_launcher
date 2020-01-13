@@ -41,4 +41,8 @@ class HomeModel extends BaseModel {
     selectedCell = appCell;
     notifyListeners();
   }
+
+  Future<void> launch(AppCell app) async {
+    LauncherAssist.launchApp(app.package);
+  }
 }

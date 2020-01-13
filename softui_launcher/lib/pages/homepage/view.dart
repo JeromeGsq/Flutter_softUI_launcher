@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.symmetric(horizontal: 32, vertical: kverticalPadding),
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        itemCount: (apps?.length ?? 1),
+        itemCount: (apps?.length ?? 0),
         itemBuilder: (_, index) {
           return index == 0
               ? CategoryCircleWidget(
@@ -106,6 +106,9 @@ class _HomePageState extends State<HomePage> {
               : AppCellWidget(
                   appCell: apps[index],
                   selected: _model.selectedCell == apps[index],
+                  onTap: () {
+                    _model.launch(apps[index]);
+                  },
                 );
         },
       ),
@@ -199,9 +202,11 @@ class AppCellWidget extends StatelessWidget {
   const AppCellWidget({
     @required this.appCell,
     @required this.selected,
+    @required this.onTap,
     Key key,
   }) : super(key: key);
 
+  final onTap;
   final appCell;
   final selected;
 
@@ -216,6 +221,7 @@ class AppCellWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: NMButton(
+                onTap: onTap,
                 width: 150,
                 child: Padding(
                   padding: const EdgeInsets.all(12),
